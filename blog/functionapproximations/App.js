@@ -13,7 +13,7 @@ import {
   getNewtonInterpolation, clone2D
 } from "./Interpolation";
 
-const initialPoints = [[1, 1], [0, 0], [2, 0], [2, 1]];
+const initialPoints = [[0, 0], [1, 1], [2, 0]];
 
 export const App = () => {
   const [points, setPoints] = useState(initialPoints);
@@ -29,8 +29,8 @@ export const App = () => {
 
   return (
     <Plot
-      plotCenter={{ x: 0, y: 0 }}
-      plotWidth={10}
+      plotCenter={{ x: 3, y: 3 }}
+      plotWidth={14.15}
     >
       <PlotGridLines />
       <PlotAxisLabels />

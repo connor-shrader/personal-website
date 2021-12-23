@@ -18,20 +18,20 @@ export const PlotHorizontalGridLines = ({
   tickSize = null,
   className = null,
 }) => {
-  const { xScale, yScale, plotCenter } = useContext(FrameContext);
+  const { xScale, yScale, plotCenter, plotWidth, plotHeight } = useContext(FrameContext);
 
   if (tickSize === null) {
-    tickSize = xScale.invert(plotCenter.y);
+    tickSize = 1/2 * plotWidth;
   }
 
   return (
     <g className="plot-gridlines plot-gridlines-horizontal">
-      {yScale.ticks().map((yTickValue) => (
+      {yScale.ticks(10 * plotHeight / plotWidth).map((yTickValue) => (
         <PlotHorizontal
           // Apparently ignoring the prop "x" sets x to undefined, which works exactly as I need.
           y={yTickValue}
-          x1={tickSize}
-          x2={-tickSize}
+          x1={plotCenter.x + tickSize}
+          x2={plotCenter.x - tickSize}
           key={yTickValue}
           className={combineClassNames(
             "plot-gridline plot-gridline-horizontal",
@@ -48,10 +48,10 @@ export const PlotVerticalGridLines = ({
   tickSize = null,
   className = null,
 }) => {
-  const { xScale, yScale, plotCenter } = useContext(FrameContext);
+  const { xScale, yScale, plotCenter, plotHeight } = useContext(FrameContext);
 
   if (tickSize === null) {
-    tickSize = yScale.invert(plotCenter.y);
+    tickSize = (1 / 2) * plotHeight;
   }
 
   return (
@@ -60,8 +60,8 @@ export const PlotVerticalGridLines = ({
         <PlotVertical
           // Apparently ignoring the prop "x" sets x to undefined, which works exactly as I need.
           x={xTickValue}
-          y1={tickSize}
-          y2={-tickSize}
+          y1={plotCenter.y + tickSize}
+          y2={plotCenter.y - tickSize}
           key={xTickValue}
           className={combineClassNames(
             "plot-gridline plot-gridline-vertical",

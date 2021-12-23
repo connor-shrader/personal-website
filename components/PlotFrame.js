@@ -9,18 +9,15 @@ export const FrameContext = createContext(null);
 
 export const PlotFrame = ({
   container,
-  plotCenter: initialPlotCenter = { x: 0, y: 0 },
-  plotWidth: initialPlotWidth = 10,
+  plotCenter = { x: 0, y: 0 },
+  plotWidth = 10,
   children,
 }) => {
-  const [plotCenter, setPlotCenter] = useState(initialPlotCenter);
-  const [plotWidth, setPlotWidth] = useState(initialPlotWidth);
-
   const frameWidth = container.width;
   const frameHeight = container.height;
+  const plotHeight = (plotWidth / frameWidth) * frameHeight;
 
   const plotRange = useMemo(() => {
-    const plotHeight = (plotWidth / frameWidth) * frameHeight;
     return {
       xmin: plotCenter.x - (1 / 2) * plotWidth,
       xmax: plotCenter.x + (1 / 2) * plotWidth,
@@ -50,6 +47,7 @@ export const PlotFrame = ({
           left: container.left,
           top: container.top,
           plotWidth,
+          plotHeight,
           plotRange,
           plotCenter,
         }}

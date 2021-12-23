@@ -15,7 +15,7 @@ import {
 import ContainerDimensions from "react-container-dimensions";
 import { combineClassNames } from "./PlotUtility";
 
-const Plot = ({children, className}, ...rest) => {
+const Plot = ({children, className, ...rest}) => {
   return (
     <div className={combineClassNames("plot", className)}>
       <ContainerDimensions>

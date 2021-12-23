@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
+import {useState, useMemo} from "react";
 import {
-  PlotFrame,
+  Plot,
   PlotPoint,
   PlotLineSegment,
   PlotFunction,
@@ -9,47 +9,35 @@ import {
   PlotGridLines,
   PlotAxisLabels,
 } from "../../components/Plot";
-import {Interpolation} from "./Interpolation.js";
+import {
+  getNewtonInterpolation, clone2D
+} from "./Interpolation";
 
-export const App = ({ container }) => {
-  const [appWidth, setAppWidth] = useState(container.offsetWidth);
-  const [appHeight, setAppHeight] = useState(container.offsetHeight);
+const initialPoints = [[1, 1], [0, 0], [2, 0], [2, 1]];
 
-  useEffect(() => {
-    const handleResize = () => {
-      setAppWidth(container.offsetWidth);
-      setAppHeight(container.offsetHeight);
-    };
+export const App = () => {
+  const [points, setPoints] = useState(initialPoints);
 
-    window.addEventListener("resize", handleResize);
+  const interpolation = useMemo(() => getNewtonInterpolation(points), [points]);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [appWidth, appHeight]);
+  const createDragHandler = (i) => ((info) => {
+      const pts = clone2D(points);
+      pts[i] = [pts[i][0] + info.plotDx, pts[i][1] + info.plotDy];
+      setPoints(pts);
+    }
+  );
 
   return (
-    <PlotFrame
-      frameWidth={appWidth}
-      frameHeight={appHeight}
+    <Plot
       plotCenter={{ x: 0, y: 0 }}
       plotWidth={10}
-      container={container}
-      >
+    >
       <PlotGridLines />
       <PlotAxisLabels />
-      <PlotVertical x={4} />
-      <PlotPoint x={0} y={0} size={10} />
-      <PlotPoint x={1} y={0} size={10} />
-      <PlotPoint x={5} y={0} size={10} />
-      <PlotPoint x={0} y={1} size={10} />
-      <PlotPoint x={0} y={5} size={10} />
-      <PlotLineSegment x1={-1} x2={1} y1={0.5} y2={0.5} />
-      <PlotFunction fun={(x) => x * x} />
-      <PlotHorizontal x1={-3} x2={0} y={1} />
-      <PlotHorizontal y={2} />
-      <PlotVertical x={3} y1={0} y2={3} />
-      <Interpolation />
-    </PlotFrame>
+      <PlotFunction fun={interpolation}/>
+      {points.map((pt, i) => 
+        <PlotPoint x={pt[0]} y={pt[1]} draggable={true} onDrag={createDragHandler(i)} size={10} />
+      )}
+    </Plot>
   );
 };

@@ -8,13 +8,10 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 import * as d3 from "d3";
-import Draggable from "react-draggable";
 
-const container = document.getElementById("interactive");
+export const FrameContext = React.createContext(null);
 
-const FrameContext = React.createContext(null);
-
-const PlotFrame = ({
+export const PlotFrame = ({
   frameWidth = 700,
   frameHeight = 500,
   plotCenter: initialPlotCenter = { x: 0, y: 0 },
@@ -65,7 +62,7 @@ const PlotFrame = ({
   );
 };
 
-const PlotPoint = ({
+export const PlotPoint = ({
   x = 0,
   y = 0,
   size = 20,
@@ -144,7 +141,7 @@ const PlotPoint = ({
   );
 };
 
-const PlotLineSegment = ({ x1, x2, y1, y2, className = null }) => {
+export const PlotLineSegment = ({ x1, x2, y1, y2, className = null }) => {
   const { xScale, yScale } = useContext(FrameContext);
 
   return (
@@ -159,7 +156,7 @@ const PlotLineSegment = ({ x1, x2, y1, y2, className = null }) => {
   );
 };
 
-const PlotFunction = ({ fun = (x) => x, className = null }) => {
+export const PlotFunction = ({ fun = (x) => x, className = null }) => {
   const { frameWidth, xScale, yScale } = useContext(FrameContext);
 
   const frameX = d3.range(frameWidth + 1);
@@ -183,7 +180,12 @@ const PlotFunction = ({ fun = (x) => x, className = null }) => {
   return <path d={line} stroke="black" fill="none" />;
 };
 
-const PlotHorizontal = ({ y, x1 = null, x2 = null, className = null }) => {
+export const PlotHorizontal = ({
+  y,
+  x1 = null,
+  x2 = null,
+  className = null,
+}) => {
   const { plotRange } = useContext(FrameContext);
 
   if (y > plotRange.ymax || y < plotRange.ymin) {
@@ -198,7 +200,7 @@ const PlotHorizontal = ({ y, x1 = null, x2 = null, className = null }) => {
   );
 };
 
-const PlotVertical = ({ x, y1 = null, y2 = null, className = null }) => {
+export const PlotVertical = ({ x, y1 = null, y2 = null, className = null }) => {
   const { plotRange } = useContext(FrameContext);
 
   if (x > plotRange.xmax || x < plotRange.xmin) {
@@ -215,7 +217,10 @@ const PlotVertical = ({ x, y1 = null, y2 = null, className = null }) => {
 
 const maxAxisDistanceFromEdge = 0.05;
 
-const PlotVerticalGridLines = ({ tickSize = null, className = null }) => {
+export const PlotVerticalGridLines = ({
+  tickSize = null,
+  className = null,
+}) => {
   const { xScale, yScale, plotCenter, frameHeight } = useContext(FrameContext);
 
   if (tickSize === null) {
@@ -247,7 +252,10 @@ const PlotVerticalGridLines = ({ tickSize = null, className = null }) => {
   ));
 };
 
-const PlotHorizontalGridLines = ({ tickSize = null, className = null }) => {
+export const PlotHorizontalGridLines = ({
+  tickSize = null,
+  className = null,
+}) => {
   const { xScale, yScale, plotCenter, frameWidth, frameHeight } =
     useContext(FrameContext);
 
@@ -311,7 +319,7 @@ const PlotHorizontalGridLines = ({ tickSize = null, className = null }) => {
 //   );
 // };
 
-const Interpolation = () => {
+export const Interpolation = () => {
   const [point, setPoint] = useState({ x: 1, y: 1 });
 
   const currY = useMemo(() => {
@@ -338,47 +346,46 @@ const Interpolation = () => {
   );
 };
 
-const App = ({ container }) => {
-  const [appWidth, setAppWidth] = useState(container.offsetWidth);
-  const [appHeight, setAppHeight] = useState(container.offsetHeight);
+// const App = ({ container }) => {
+//   const [appWidth, setAppWidth] = useState(container.offsetWidth);
+//   const [appHeight, setAppHeight] = useState(container.offsetHeight);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setAppWidth(container.offsetWidth);
-      setAppHeight(container.offsetHeight);
-    };
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setAppWidth(container.offsetWidth);
+//       setAppHeight(container.offsetHeight);
+//     };
 
-    window.addEventListener("resize", handleResize);
+//     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [appWidth, appHeight]);
+//     return () => {
+//       window.removeEventListener("resize", handleResize);
+//     };
+//   }, [appWidth, appHeight]);
 
-  return (
-    <PlotFrame
-      frameWidth={appWidth}
-      frameHeight={appHeight}
-      plotCenter={{ x: 2, y: 3 }}
-      plotWidth={12}
-      container={container}
-    >
-      <PlotPoint x={0} y={0} size={10} />
-      <PlotPoint x={1} y={0} size={10} />
-      <PlotPoint x={5} y={0} size={10} />
-      <PlotPoint x={0} y={1} size={10} />
-      <PlotPoint x={0} y={5} size={10} />
-      <PlotLineSegment x1={-1} x2={1} y1={0.5} y2={0.5} />
-      <PlotFunction fun={(x) => x * x} />
-      <PlotHorizontal x1={-3} x2={0} y={1} />
-      <PlotHorizontal y={2} />
-      <PlotVertical x={3} y1={0} y2={3} />
-      <PlotVertical x={4} />
-      <PlotVerticalGridLines />
-      <PlotHorizontalGridLines />
-      <Interpolation />
-    </PlotFrame>
-  );
-};
+//   return (
+//     <PlotFrame
+//       frameWidth={appWidth}
+//       frameHeight={appHeight}
+//       plotCenter={{ x: 2, y: 3 }}
+//       plotWidth={12}
+//       container={container}
+//     >
+//       <PlotPoint x={0} y={0} size={10} />
+//       <PlotPoint x={1} y={0} size={10} />
+//       <PlotPoint x={5} y={0} size={10} />
+//       <PlotPoint x={0} y={1} size={10} />
+//       <PlotPoint x={0} y={5} size={10} />
+//       <PlotLineSegment x1={-1} x2={1} y1={0.5} y2={0.5} />
+//       <PlotFunction fun={(x) => x * x} />
+//       <PlotHorizontal x1={-3} x2={0} y={1} />
+//       <PlotHorizontal y={2} />
+//       <PlotVertical x={3} y1={0} y2={3} />
+//       <PlotVertical x={4} />
+//       <PlotVerticalGridLines />
+//       <PlotHorizontalGridLines />
+//       <Interpolation />
+//     </PlotFrame>
+//   );
+// };
 
-ReactDOM.render(<App container={container} />, container);

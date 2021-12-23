@@ -10,9 +10,9 @@ website_title = "Franklin Template"
 website_descr = "Example website using Franklin"
 website_url   = "https://tlienart.github.io/FranklinTemplates.jl/"
 
-def prepath = "personal-website"
-def hasd3 = false
-def hasreact = false
+prepath = "personal-website"
+hasd3 = false
+hasreact = false
 +++
 
 \newcommand{\R}{\mathbb R}

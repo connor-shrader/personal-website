@@ -12,7 +12,7 @@ const globalModule = {
   rules: [
     {
       test: /\.(js|jsx)$/,
-      exclude: [/node_modules/, /components/],
+      exclude: [/node_modules/],
       use: {
         loader: "babel-loader",
       },

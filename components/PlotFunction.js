@@ -1,7 +1,11 @@
 import { useContext } from "react";
 import { FrameContext } from "./PlotFrame";
 
-export const PlotFunction = ({ fun = (x) => x, className = null }) => {
+export const PlotFunction = ({ fun, className = null }) => {
+  if (fun === null) {
+    return null;
+  }
+
   const { frameWidth, xScale, yScale } = useContext(FrameContext);
 
   const frameX = d3.range(frameWidth + 1);

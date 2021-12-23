@@ -12,8 +12,25 @@ import {
   PlotXAxisLabels,
   PlotYAxisLabels,
 } from "./PlotAxisLabels";
+import ContainerDimensions from "react-container-dimensions";
+import { combineClassNames } from "./PlotUtility";
+
+const Plot = ({children, className}, ...rest) => {
+  return (
+    <div className={combineClassNames("plot", className)}>
+      <ContainerDimensions>
+        {(container) =>
+          <PlotFrame container={container} {...rest}>
+            {children}
+          </PlotFrame>
+        }
+      </ContainerDimensions>
+    </div>
+  )
+}
 
 export {
+  Plot,
   PlotFrame,
   PlotPoint,
   PlotFunction,

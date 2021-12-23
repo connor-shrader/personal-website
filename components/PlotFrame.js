@@ -8,15 +8,16 @@ import * as d3 from "d3";
 export const FrameContext = createContext(null);
 
 export const PlotFrame = ({
-  frameWidth = 700,
-  frameHeight = 500,
+  container,
   plotCenter: initialPlotCenter = { x: 0, y: 0 },
   plotWidth: initialPlotWidth = 10,
-  container,
   children,
 }) => {
   const [plotCenter, setPlotCenter] = useState(initialPlotCenter);
   const [plotWidth, setPlotWidth] = useState(initialPlotWidth);
+
+  const frameWidth = container.width;
+  const frameHeight = container.height;
 
   const plotRange = useMemo(() => {
     const plotHeight = (plotWidth / frameWidth) * frameHeight;
@@ -26,7 +27,7 @@ export const PlotFrame = ({
       ymin: plotCenter.y - (1 / 2) * plotHeight,
       ymax: plotCenter.y + (1 / 2) * plotHeight,
     };
-  }, [frameWidth, frameHeight, plotCenter, plotWidth]);
+  }, [container, plotCenter, plotWidth]);
 
   const xScale = d3
     .scaleLinear()
@@ -46,10 +47,11 @@ export const PlotFrame = ({
           yScale,
           frameWidth,
           frameHeight,
+          left: container.left,
+          top: container.top,
           plotWidth,
           plotRange,
           plotCenter,
-          container,
         }}
       >
         {children}

@@ -15,7 +15,7 @@ export const PlotPoint = ({
   ...rest
 }) => {
   const [dragPos, setDragPos] = useState(null);
-  const { xScale, yScale, container, frameWidth, frameHeight, plotWidth } =
+  const { xScale, yScale, frameWidth, frameHeight, plotWidth, left, top } =
     useContext(FrameContext);
 
   const onMouseDown = useCallback(
@@ -23,21 +23,19 @@ export const PlotPoint = ({
       if (!draggable) return;
 
       const { clientX, clientY } = event;
-      const { left, top } = container.getBoundingClientRect();
 
       setDragPos({
         frameX: clientX - left,
         frameY: clientY - top,
       });
     },
-    [x, y, draggable, dragPos]
+    [dragPos, frameWidth, frameHeight]
   );
 
   const onMouseMove = useCallback((event) => {
     if (!draggable || !dragPos) return;
 
     const { clientX, clientY } = event;
-    const { left, top } = container.getBoundingClientRect();
 
     const frameX = clientX - left;
     const frameY = clientY - top;
@@ -55,7 +53,7 @@ export const PlotPoint = ({
     });
 
     onDrag({ frameDx, frameDy, plotDx, plotDy });
-  });
+  }, [dragPos, x, y]);
 
   const onMouseUp = useCallback(
     (event) => {

@@ -22,12 +22,13 @@ export const PlotXAxisLabels = ({className = null, maxDistanceFromEdge = 0.05}) 
 
   return (
     <g
-      className={combineClassNames("plot-x-axis-labels", className)}
+      className="plot-axis-labels plot-x-axis-labels"
       transform={`translate(0, ${axisFrameY})`}
     >
       {xScale.ticks().map((xTickValue) => (
         <text
           transform={`translate(${xScale(xTickValue)}, 0)`}
+          className={combineClassNames("plot-axis-label plot-x-axis-label", className)}
           style={{
             textAnchor: "middle",
             dominantBaseline: "middle",
@@ -55,12 +56,16 @@ export const PlotYAxisLabels = ({
 
   return (
     <g
-      className={combineClassNames("plot-y-axis-labels", className)}
+      className="plot-axis-labels plot-y-axis-labels"
       transform={`translate(${axisFrameX}, 0)`}
     >
       {yScale.ticks().map((yTickValue) => (
         <text
           transform={`translate(0, ${yScale(yTickValue)})`}
+          className={combineClassNames(
+            "plot-axis-label plot-y-axis-label",
+            className
+          )}
           style={{
             textAnchor: "middle",
             dominantBaseline: "middle",

@@ -7,6 +7,9 @@
     stroke: lightgray
 }
 
-.plot-axis-x {
-    color: red;
+.plot-axis-label {
+    fill: black;
+    stroke: white;
+    stroke-width: 3;
+    paint-order: stroke;
 }

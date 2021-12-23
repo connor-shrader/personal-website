@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { FrameContext } from "./PlotFrame";
-import { PlotVertical } from "./PlotVertical";
-import { PlotHorizontal } from "./PlotHorizontal";
+import { PlotVertical, PlotHorizontal } from "./PlotLines";
 import { combineClassNames } from "./PlotUtility";
 
 export const PlotGridLines = ({

@@ -1,27 +1,32 @@
-import {PlotPoint} from "./PlotPoint";
-import {PlotFrame} from "./PlotFrame";
-import {PlotFunction} from "./PlotFunction";
-import { PlotHorizontal } from "./PlotHorizontal";
+import { PlotPoint } from "./PlotPoint";
+import { PlotFrame } from "./PlotFrame";
+import { PlotFunction } from "./PlotFunction";
+import { PlotLineSegment, PlotHorizontal, PlotVertical } from "./PlotLines";
 import {
-  PlotGridLines, 
+  PlotGridLines,
   PlotHorizontalGridLines,
   PlotVerticalGridLines,
 } from "./PlotGridLines";
-import { PlotLineSegment } from "./PlotLineSegment";
-import { PlotVertical } from "./PlotVertical";
-import { PlotAxisLabels, PlotXAxisLabels, PlotYAxisLabels } from "./PlotAxisLabels";
+import {
+  PlotAxisLabels,
+  PlotXAxisLabels,
+  PlotYAxisLabels,
+} from "./PlotAxisLabels";
 
 export {
   PlotFrame,
   PlotPoint,
   PlotFunction,
-  PlotHorizontal,
-  PlotHorizontalGridLines,
-  PlotGridLines,
+  
   PlotLineSegment,
+  PlotHorizontal,
   PlotVertical,
+
+  PlotGridLines,
+  PlotHorizontalGridLines,
   PlotVerticalGridLines,
+
+  PlotAxisLabels,
   PlotXAxisLabels,
   PlotYAxisLabels,
-  PlotAxisLabels,
 };

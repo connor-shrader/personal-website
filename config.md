@@ -1,5 +1,5 @@
 +++
-author = "Septimia Zenobia"
+author = "Connor Shrader"
 mintoclevel = 2
 
 ignore = ["node_modules/", "components/"]

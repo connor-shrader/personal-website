@@ -6,3 +6,7 @@
 .plot-gridline {
     stroke: lightgray
 }
+
+.plot-axis-x {
+    color: red;
+}

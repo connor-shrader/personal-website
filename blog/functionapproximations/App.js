@@ -1,16 +1,15 @@
 import {useState, useEffect} from "react";
 import {
-  FrameContext,
   PlotFrame,
   PlotPoint,
   PlotLineSegment,
   PlotFunction,
   PlotHorizontal,
   PlotVertical,
-  PlotVerticalGridLines,
-  PlotHorizontalGridLines,
-  Interpolation
-} from "../../components/PlotFrame";
+  PlotGridLines,
+  PlotAxisLabels,
+} from "../../components/Plot";
+import {Interpolation} from "./Interpolation.js";
 
 export const App = ({ container }) => {
   const [appWidth, setAppWidth] = useState(container.offsetWidth);
@@ -33,10 +32,13 @@ export const App = ({ container }) => {
     <PlotFrame
       frameWidth={appWidth}
       frameHeight={appHeight}
-      plotCenter={{ x: 2, y: 3 }}
-      plotWidth={12}
+      plotCenter={{ x: 0, y: 0 }}
+      plotWidth={10}
       container={container}
-    >
+      >
+      <PlotGridLines />
+      <PlotAxisLabels />
+      <PlotVertical x={4} />
       <PlotPoint x={0} y={0} size={10} />
       <PlotPoint x={1} y={0} size={10} />
       <PlotPoint x={5} y={0} size={10} />
@@ -47,9 +49,6 @@ export const App = ({ container }) => {
       <PlotHorizontal x1={-3} x2={0} y={1} />
       <PlotHorizontal y={2} />
       <PlotVertical x={3} y1={0} y2={3} />
-      <PlotVertical x={4} />
-      <PlotVerticalGridLines />
-      <PlotHorizontalGridLines />
       <Interpolation />
     </PlotFrame>
   );

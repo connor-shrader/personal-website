@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { FrameContext } from "./PlotFrame";
+import { combineClassNames } from "./PlotUtility";
 
 export const PlotFunction = ({ fun, className = null }) => {
   if (fun === null) {
@@ -26,5 +27,10 @@ export const PlotFunction = ({ fun, className = null }) => {
 
   const line = d3.line()(plotPoints);
 
-  return <path d={line} stroke="black" fill="none" />;
+  return <path 
+    d={line} 
+    stroke="black"
+    fill="none"
+    className={combineClassNames("plot-function", className)}
+  />;
 };

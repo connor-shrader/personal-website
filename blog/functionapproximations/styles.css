@@ -21,3 +21,21 @@
 .plot-axis {
     stroke: black;
 }
+
+.plot-point-draggable {
+    cursor: grab;
+}
+
+.plot-point-dragging {
+    cursor: grabbing;
+}
+
+.interpolation {
+    stroke-width: 3;
+}
+
+.node {
+    fill: white;
+    stroke: black;
+    stroke-width: 3;
+}

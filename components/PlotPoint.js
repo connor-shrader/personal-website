@@ -5,6 +5,7 @@ import {
   useEffect
 } from "react";
 import { FrameContext } from "./PlotFrame";
+import { combineClassNames } from "./PlotUtility";
 
 export const PlotPoint = ({
   x = 0,
@@ -12,6 +13,7 @@ export const PlotPoint = ({
   size = 20,
   draggable = false,
   onDrag = null,
+  className = null,
   ...rest
 }) => {
   const [dragPos, setDragPos] = useState(null);
@@ -78,6 +80,12 @@ export const PlotPoint = ({
       cx={xScale(x)}
       cy={yScale(y)}
       r={size}
+      className={combineClassNames(
+        "plot-point",
+        draggable ? "plot-point-draggable" : "",
+        dragPos ? "plot-point-dragging" : "",
+        className
+      )}
       {...rest}
     />
   );

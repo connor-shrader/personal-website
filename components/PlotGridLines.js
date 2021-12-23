@@ -26,7 +26,7 @@ export const PlotHorizontalGridLines = ({
 
   return (
     <g className="plot-gridlines plot-gridlines-horizontal">
-      {yScale.ticks(10 * plotHeight / plotWidth).map((yTickValue) => (
+      {yScale.ticks((10 * plotHeight) / plotWidth).map((yTickValue) => (
         <PlotHorizontal
           // Apparently ignoring the prop "x" sets x to undefined, which works exactly as I need.
           y={yTickValue}

@@ -1,25 +1,23 @@
-<!--
-Add here global page variables to use throughout your website.
--->
 +++
 author = "Septimia Zenobia"
 mintoclevel = 2
 
-# Add here files or directories that should be ignored by Franklin, otherwise
-# these files might be copied and, if markdown, processed by Franklin which
-# you might not want. Indicate directories by ending the name with a `/`.
-# Base files such as LICENSE.md and README.md are ignored by default.
-ignore = ["node_modules/"]
+ignore = ["node_modules/", "components/"]
 
 # RSS (the website_{title, descr, url} must be defined to get RSS)
 generate_rss = true
 website_title = "Franklin Template"
 website_descr = "Example website using Franklin"
 website_url   = "https://tlienart.github.io/FranklinTemplates.jl/"
+
+def prepath = "personal-website"
+def hasd3 = false
+def hasreact = false
 +++
 
-<!--
-Add here global latex commands to use throughout your pages.
--->
 \newcommand{\R}{\mathbb R}
 \newcommand{\scal}[1]{\langle #1 \rangle}
+\newcommand{\loadscript}[1]{~~~<script src="!#1"></script>~~~}
+\newcommand{\loadmodule}[1]{~~~<script type="module" src="!#1"></script>~~~}
+\newcommand{\loadstyles}[1]{~~~<link rel="stylesheet" href="!#1"></link>~~~}
+\newcommand{\emptydiv}[1]{~~~<div id="!#1"></div>~~~}

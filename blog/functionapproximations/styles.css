@@ -22,7 +22,10 @@
     stroke: black;
 }
 
-.plot-point-draggable {
+.plot-point {
+    fill: white;
+    stroke: black;
+    stroke-width: 3;
     cursor: grab;
 }
 
@@ -31,11 +34,5 @@
 }
 
 .interpolation {
-    stroke-width: 3;
-}
-
-.node {
-    fill: white;
-    stroke: black;
     stroke-width: 3;
 }

@@ -18,7 +18,6 @@ export const PlotPoint = ({
 
   return (
     <circle
-      // onMouseDown={onMouseDown}
       cx={xScale(x)}
       cy={yScale(y)}
       r={size}

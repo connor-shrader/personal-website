@@ -4,17 +4,25 @@ import {
   createContext,
 } from "react";
 import * as d3 from "d3";
+import { DraggableCore } from "react-draggable";
+import { convertFrameToPlotDifference } from "./PlotUtility";
 
 export const FrameContext = createContext(null);
 
 export const PlotFrame = ({
   container,
-  plotCenter = { x: 0, y: 0 },
+  plotCenter: defaultCenter = {x: 0, y: 0},
   plotWidth = 10,
+  pannable = false,
   children,
+  ...rest
 }) => {
+  const [plotCenter, setPlotCenter] = useState(defaultCenter);
+  const [panning, setPanning] = useState(false);
+
   const frameWidth = container.width;
   const frameHeight = container.height;
+  const plotFrameRatio = plotWidth / frameWidth;
   const plotHeight = (plotWidth / frameWidth) * frameHeight;
 
   const plotRange = useMemo(() => {
@@ -36,24 +44,47 @@ export const PlotFrame = ({
     .domain([plotRange.ymin, plotRange.ymax])
     .range([frameHeight, 0]);
 
+  const startHandler = (event, data) => {
+    if (pannable && event.target.tagName == "svg") setPanning(true);
+  };
+
+  const dragHandler = (event, data) => {
+    if (pannable && panning) {
+      const [plotDeltaX, plotDeltaY] = convertFrameToPlotDifference(
+        data.deltaX,
+        data.deltaY,
+        plotFrameRatio
+      );
+
+      setPlotCenter({x: plotCenter.x - plotDeltaX, y: plotCenter.y - plotDeltaY});
+    }
+  };
+
+  const stopHandler = (event, data) => {
+    if (pannable) setPanning(false);
+  };
+
   return (
-    <svg width={frameWidth} height={frameHeight}>
-      <FrameContext.Provider
-        value={{
-          xScale,
-          yScale,
-          frameWidth,
-          frameHeight,
-          left: container.left,
-          top: container.top,
-          plotWidth,
-          plotHeight,
-          plotRange,
-          plotCenter,
-        }}
-      >
-        {children}
-      </FrameContext.Provider>
-    </svg>
+    <DraggableCore onStart={startHandler} onDrag={dragHandler} onStop={stopHandler}>
+      <svg width={frameWidth} height={frameHeight} {...rest}>
+        <FrameContext.Provider
+          value={{
+            xScale,
+            yScale,
+            frameWidth,
+            frameHeight,
+            plotFrameRatio,
+            left: container.left,
+            top: container.top,
+            plotWidth,
+            plotHeight,
+            plotRange,
+            plotCenter,
+          }}
+        >
+          {children}
+        </FrameContext.Provider>
+      </svg>
+    </DraggableCore>
   );
 };

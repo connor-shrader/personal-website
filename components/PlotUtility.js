@@ -18,3 +18,7 @@ export const combineClassNames = (...args) => {
   const addition = args[args.length - 1];
   return addition ? original + " " + addition : original;
 };
+
+export const convertFrameToPlotDifference = (frameX, frameY, aspectRatio) => {
+  return [frameX * aspectRatio, -frameY * aspectRatio]
+}

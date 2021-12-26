@@ -46,7 +46,7 @@ const Interpolation = (props) => {
   
   const stopHandler = (event, data) => {
     console.log("Stopped dragging.");
-    setPointDragging(0);
+    setPointDragging(null);
   };
   
   return (

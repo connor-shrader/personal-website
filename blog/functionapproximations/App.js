@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext, useCallback } from "react";
 import {
   Plot,
   PlotPoint,
@@ -10,6 +10,9 @@ import {
   PlotAxisLabels,
 } from "../../components/Plot";
 import { getNewtonInterpolation, clone2D } from "./Interpolation";
+import { DraggableCore } from "react-draggable";
+import { FrameContext } from "../../components/PlotFrame";
+import { combineClassNames } from "../../components/PlotUtility";
 
 const initialPoints = [
   [0, 0],
@@ -17,33 +20,62 @@ const initialPoints = [
   [2, 0],
 ];
 
-export const App = () => {
+const Interpolation = (props) => {
   const [points, setPoints] = useState(initialPoints);
+  const [pointDragging, setPointDragging] = useState(null);
+  const { plotFrameRatio } = useContext(FrameContext);
 
   const interpolation = useMemo(() => getNewtonInterpolation(points), [points]);
 
-  const createDragHandler = (i) => (info) => {
+  const createStartHandler = (i) => (event, data) => {
+    console.log("Set point dragging to " + i);
+    setPointDragging(i);
+  }
+  
+  const createDragHandler = (i) => (event, data) => {
+    console.log("Dragging " + i);
     const pts = clone2D(points);
-    pts[i] = [pts[i][0] + info.plotDx, pts[i][1] + info.plotDy];
+    
+    const plotDeltaX = data.deltaX * plotFrameRatio;
+    const plotDeltaY = -data.deltaY * plotFrameRatio;
+    
+    pts[i] = [pts[i][0] + plotDeltaX, pts[i][1] + plotDeltaY];
     setPoints(pts);
   };
-
+  
+  const stopHandler = (event, data) => {
+    console.log("Stopped dragging.");
+    setPointDragging(null);
+  };
+  
   return (
-    <Plot plotCenter={{ x: 3, y: 3 }} plotWidth={14.15}>
+    <>
       <PlotGridLines />
       <PlotAxisLabels />
       <PlotFunction fun={interpolation} className="interpolation" />
       {points.map((pt, i) => (
-        <PlotPoint
-          x={pt[0]}
-          y={pt[1]}
-          draggable={true}
+        <DraggableCore 
+          onStart={createStartHandler(i)}
+          onStop={stopHandler}
           onDrag={createDragHandler(i)}
-          size={10}
-          key={i}
-          className="node"
-        />
+        >
+          <PlotPoint 
+            x={pt[0]}
+            y={pt[1]}
+            size={10}
+            key={i}
+            className={pointDragging == i ? "plot-point-dragging" : ""} 
+          />
+        </DraggableCore>
       ))}
-    </Plot>
+    </>
   );
+};
+
+export const App = () => {
+  return (
+    <Plot plotCenter={{x: 0, y: 0}} plotWidth={15} pannable={true}>
+      <Interpolation/>
+    </Plot>
+  )
 };

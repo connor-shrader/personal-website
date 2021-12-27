@@ -30,10 +30,12 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "@use-gesture/react": "^10.2.4",
     "d3": "^7.2.1",
     "highlight.js": "^11.3.1",
     "react": "^17.0.2",
     "react-container-dimensions": "^1.4.1",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.4"
   }
 }

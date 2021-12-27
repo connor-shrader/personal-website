@@ -1,0 +1,4 @@
+Make zoom in approach mouse position (instead of staying centered)
+Handle pinches
+Format axis labels
+Address what happens when zooming while dragging a point (might be fixed by fixing #1)

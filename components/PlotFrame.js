@@ -81,23 +81,34 @@ export const PlotFrame = ({
       });
     },
     onWheel: (state) => {
+      // Gesture events are automatically debounced. To avoid
+      // events being doubled, we use the active property.
+      // See https://github.com/pmndrs/use-gesture/issues/202
+      if (!state.active) return;
+
+      console.log(container);
+
       const scrollDown = state.delta[1] > 0;
 
-      if (scrollDown) {
-        setPlotWidth(1.25 * plotWidth);
-      } else {
-        setPlotWidth(0.8 * plotWidth);
-      }
+      const {clientX, clientY} = state.event;
+      const plotX = xScale.invert(clientX - container.left);
+      const plotY = yScale.invert(clientY - container.top);
 
-      // Scroll events happen twice at a time, for some reason.
-      // This code times scrolls out for 0.05s after each scroll.
-      // See https://stackoverflow.com/a/22018607
-      $(window).scroll(function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-          // do your stuff
-        }, 50);
-      });
+      // Between -1/2 and 1/2
+      const plotRelativeX = (plotX - plotCenter.x) / plotWidth;
+      const plotRelativeY = (plotY - plotCenter.y) / plotHeight;
+      console.log(plotRelativeX, plotRelativeY);
+
+      const newPlotWidth = (scrollDown ? 1.25 : 0.8) * plotWidth;
+      const newPlotHeight = (scrollDown ? 1.25 : 0.8) * plotHeight;
+
+      const newPlotCenterX = plotX - plotRelativeX * newPlotWidth;
+      const newPlotCenterY = plotY - plotRelativeY * newPlotHeight;
+      const newPlotCenter = {x: newPlotCenterX, y: newPlotCenterY};
+
+      setPlotCenter(newPlotCenter);
+      setPlotWidth(newPlotWidth);
+      console.log(newPlotCenter);
     },
   }, {
     eventOptions: {passive: false}

@@ -17,7 +17,7 @@ import { combineClassNames } from "./PlotUtility";
 
 const Plot = ({children, className, ...rest}) => {
   return (
-    <div className={combineClassNames("plot", className)}>
+    <div className={combineClassNames("plot", className)} touchAction="none">
       <ContainerDimensions>
         {(container) =>
           <PlotFrame container={container} {...rest}>

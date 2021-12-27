@@ -8,6 +8,8 @@ import { DraggableCore } from "react-draggable";
 import { convertFrameToPlotDifference } from "./PlotUtility";
 import { useGesture } from "@use-gesture/react";
 
+import { PlotPoint } from "./PlotPoint";
+
 export const FrameContext = createContext(null);
 
 export const PlotFrame = ({
@@ -20,6 +22,7 @@ export const PlotFrame = ({
 }) => {
   const [plotCenter, setPlotCenter] = useState(defaultCenter);
   const [plotWidth, setPlotWidth] = useState(defaultWidth);
+  const [pinchPos, setPinchPos] = useState(null);
 
   const frameWidth = container.width;
   const frameHeight = container.height;
@@ -67,7 +70,7 @@ export const PlotFrame = ({
 
   const gest = useGesture({
     onDrag: (state) => {
-      if (state.target.tagName != "svg") return;
+      if (state.target.tagName != "svg" || state.pinching) return;
 
       const [plotDeltaX, plotDeltaY] = convertFrameToPlotDifference(
         state.delta[0],
@@ -81,12 +84,11 @@ export const PlotFrame = ({
       });
     },
     onWheel: (state) => {
+      console.log("Wheel");
       // Gesture events are automatically debounced. To avoid
       // events being doubled, we use the active property.
       // See https://github.com/pmndrs/use-gesture/issues/202
       if (!state.active) return;
-
-      console.log(container);
 
       const scrollDown = state.delta[1] > 0;
 
@@ -97,7 +99,6 @@ export const PlotFrame = ({
       // Between -1/2 and 1/2
       const plotRelativeX = (plotX - plotCenter.x) / plotWidth;
       const plotRelativeY = (plotY - plotCenter.y) / plotHeight;
-      console.log(plotRelativeX, plotRelativeY);
 
       const newPlotWidth = (scrollDown ? 1.25 : 0.8) * plotWidth;
       const newPlotHeight = (scrollDown ? 1.25 : 0.8) * plotHeight;
@@ -108,10 +109,30 @@ export const PlotFrame = ({
 
       setPlotCenter(newPlotCenter);
       setPlotWidth(newPlotWidth);
-      console.log(newPlotCenter);
     },
-    onPinch = (state) => {
-      
+    onPinchStart: (state) => {
+      const plotX = xScale.invert(state.origin[0] - container.left);
+      const plotY = yScale.invert(state.origin[1] - container.top);
+
+      setPinchPos({x: plotX, y: plotY, distance: state.da[0], plotWidth: plotWidth});
+    },
+    onPinch: (state) => {
+      if (!pinchPos) return;
+      const plotX = xScale.invert(state.origin[0] - container.left)
+      const plotY = yScale.invert(state.origin[1] - container.top)
+
+      const plotDX = plotX - pinchPos.x;
+      const plotDY = plotY - pinchPos.y;
+      const plotDDist = pinchPos.distance / state.da[0];
+
+      // console.log(plotDDist);
+
+      setPlotCenter({x: plotCenter.x - plotDX, y: plotCenter.y - plotDY});
+      setPlotWidth(pinchPos.plotWidth * plotDDist);
+      //setPinchPos({x: plotX, y: plotY, distance: state.da[0]})
+    },
+    onPinchEnd: (state) => {
+      setPinchPos(null);
     }
   }, {
     eventOptions: {passive: false}
@@ -134,6 +155,10 @@ export const PlotFrame = ({
           plotCenter,
         }}
       >
+        {/* <PlotPoint
+          x={pinchPos ? pinchPos.x : 0}
+          y={pinchPos ? pinchPos.y : 0}
+        /> */}
         {children}
       </FrameContext.Provider>
     </svg>

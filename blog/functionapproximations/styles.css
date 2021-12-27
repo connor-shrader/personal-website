@@ -1,6 +1,7 @@
 #interactive {
     width: 100%;
     height: 500px;
+    touch-action: none;
 }
 
 .plot {

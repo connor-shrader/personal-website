@@ -110,6 +110,9 @@ export const PlotFrame = ({
       setPlotWidth(newPlotWidth);
       console.log(newPlotCenter);
     },
+    onPinch = (state) => {
+      
+    }
   }, {
     eventOptions: {passive: false}
   });
